@@ -23,3 +23,7 @@ jobs:
       run: |
         cd development
         terraform plan
+    - name: Apply
+      run: |
+        cd development
+        terraform apply -auto-approve
