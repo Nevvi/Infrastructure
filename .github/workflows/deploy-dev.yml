@@ -1,0 +1,22 @@
+name: Upload Dev Website
+
+on:
+  push:
+    branches:
+    - develop
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Configure AWS
+      run: |
+        aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws configure set default.region us-east-1
+    - name: Build project
+      run: |
+        cd development
+        terraform init
+        terraform plan
