@@ -15,8 +15,11 @@ jobs:
         aws configure set aws_access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
         aws configure set aws_secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws configure set default.region us-east-1
-    - name: Build project
+    - name: Initialize
       run: |
         cd development
         terraform init
+    - name: Plan
+      run: |
+        cd development
         terraform plan
