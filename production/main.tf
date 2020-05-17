@@ -25,5 +25,5 @@ module "website" {
 
 module "user_pool" {
   source = "../modules/authentication"
-  user_pool_name = "nevvi-public_users"
+  user_pool_name = "nevvi-public-users"
 }
