@@ -26,4 +26,5 @@ module "website" {
 module "user_pool" {
   source = "../modules/authentication"
   user_pool_name = "nevvi-public-users"
+  pre_signup_function_name = "authentication-production-preSignUpTrigger"
 }
