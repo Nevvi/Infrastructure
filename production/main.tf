@@ -21,6 +21,7 @@ module "website" {
   site_cert_name = "www.nevvi.net"
   cloudfront_cname_aliases = ["nevvi.net", "www.nevvi.net"]
   environment = var.environment
+  backend_domain = "api.nevvi.net"
 }
 
 module "user_pool" {

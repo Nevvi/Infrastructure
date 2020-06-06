@@ -22,3 +22,7 @@ variable "site_cert_name" {
 variable "environment" {
   description = "Environment"
 }
+
+variable "backend_domain" {
+  description = "Base domain of backend"
+}
