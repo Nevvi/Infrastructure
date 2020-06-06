@@ -62,6 +62,18 @@ resource "aws_cloudfront_distribution" "website_cdn" {
     }
   }
 
+  origin {
+    origin_id   = "apigw"
+    domain_name = var.backend_domain
+
+    custom_origin_config {
+      http_port              = 80
+      https_port             = 443
+      origin_protocol_policy = "https-only"
+      origin_ssl_protocols   = ["TLSv1.2"]
+    }
+  }
+
   default_root_object = "index.html"
 
   logging_config {
@@ -70,7 +82,7 @@ resource "aws_cloudfront_distribution" "website_cdn" {
   }
 
   default_cache_behavior {
-    allowed_methods = ["GET", "HEAD"]
+    allowed_methods = ["HEAD", "DELETE", "POST", "GET", "OPTIONS", "PUT", "PATCH"]
     cached_methods  = ["GET", "HEAD"]
     target_origin_id = "S3-${aws_s3_bucket.site.id}"
 
@@ -89,6 +101,33 @@ resource "aws_cloudfront_distribution" "website_cdn" {
         forward = "none"
       }
     }
+  }
+
+  ordered_cache_behavior {
+    path_pattern     = "/api/*"
+    allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = "apigw"
+
+    default_ttl = 0
+    min_ttl     = 0
+    max_ttl     = 0
+
+    forwarded_values {
+      query_string = true
+      cookies {
+        forward = "all"
+      }
+    }
+
+    // Hardcoded for now to point to manually created lambda that maps api.nevvi.net/api/* -> api.nevvi.net/*
+    lambda_function_association {
+      event_type   = "origin-request"
+      include_body = true
+      lambda_arn   = "arn:aws:lambda:us-east-1:275527036335:function:cloudfront-request:5"
+    }
+
+    viewer_protocol_policy = "redirect-to-https"
   }
 
   restrictions {
