@@ -76,6 +76,13 @@ resource "aws_cloudfront_distribution" "website_cdn" {
 
   default_root_object = "index.html"
 
+  custom_error_response {
+    error_caching_min_ttl = 300
+    error_code = 403
+    response_code = 200
+    response_page_path = "/index.html"
+  }
+
   logging_config {
     include_cookies = false
     bucket          = aws_s3_bucket.site_logs.bucket_domain_name

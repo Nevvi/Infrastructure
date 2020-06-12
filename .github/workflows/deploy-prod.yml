@@ -1,4 +1,4 @@
-name: Upload Dev Website
+name: Upload Prod Infrastructure
 
 on:
   push:
