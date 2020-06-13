@@ -31,5 +31,5 @@ module "user_pool" {
 
 module "user_table" {
   source = "../modules/database"
-  table_name = "dev-user"
+  table_name = "user-dev"
 }
