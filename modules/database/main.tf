@@ -18,3 +18,11 @@ resource "aws_dynamodb_table" "table" {
     Name        = "${var.table_name}-dynamodb-table"
   }
 }
+
+// Outputs
+
+resource "aws_ssm_parameter" "user_table_arn" {
+  name  = "/nevvi/dynamodb/${var.table_name}/arn"
+  type  = "String"
+  value = aws_dynamodb_table.table.arn
+}
