@@ -28,3 +28,8 @@ module "user_pool" {
   user_pool_name = "nevvi-development-public-users"
   pre_signup_function_name = "authentication-development-preSignUpTrigger"
 }
+
+module "user_table" {
+  source = "../modules/database"
+  table_name = "dev-user"
+}

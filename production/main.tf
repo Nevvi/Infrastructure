@@ -29,3 +29,8 @@ module "user_pool" {
   user_pool_name = "nevvi-public-users"
   pre_signup_function_name = "authentication-production-preSignUpTrigger"
 }
+
+module "user_table" {
+  source = "../modules/database"
+  table_name = "user"
+}
