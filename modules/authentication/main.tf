@@ -50,6 +50,12 @@ resource "aws_ssm_parameter" "user_pool_id" {
   value = aws_cognito_user_pool.user_pool.id
 }
 
+resource "aws_ssm_parameter" "user_pool_arn" {
+  name  = "/nevvi/cognito/${var.user_pool_name}/arn"
+  type  = "String"
+  value = aws_cognito_user_pool.user_pool.arn
+}
+
 resource "aws_ssm_parameter" "user_pool_app_client" {
   name  = "/nevvi/cognito/${var.user_pool_name}/clients/authentication/id"
   type  = "String"
@@ -95,6 +101,12 @@ resource "aws_ssm_parameter" "api_pool_id" {
   name  = "/nevvi/cognito/${var.api_pool_name}/id"
   type  = "String"
   value = aws_cognito_user_pool.api_pool.id
+}
+
+resource "aws_ssm_parameter" "api_pool_arn" {
+  name  = "/nevvi/cognito/${var.api_pool_name}/arn"
+  type  = "String"
+  value = aws_cognito_user_pool.api_pool.arn
 }
 
 resource "aws_ssm_parameter" "api_pool_auth_client_id" {
