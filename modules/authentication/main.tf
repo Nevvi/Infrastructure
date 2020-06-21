@@ -1,3 +1,5 @@
+// USER POOL
+
 data "aws_lambda_function" "pre_signup_trigger" {
   function_name = var.pre_signup_function_name
 }
@@ -52,4 +54,57 @@ resource "aws_ssm_parameter" "user_pool_app_client" {
   name  = "/nevvi/cognito/${var.user_pool_name}/clients/authentication/id"
   type  = "String"
   value = aws_cognito_user_pool_client.authentication_app_client.id
+}
+
+// API POOL
+
+resource "aws_cognito_user_pool" "api_pool" {
+  name = var.api_pool_name
+}
+
+resource "aws_cognito_user_pool_domain" "api_pool_domain" {
+  domain       = var.api_pool_name
+  user_pool_id = aws_cognito_user_pool.api_pool.id
+}
+
+resource "aws_cognito_resource_server" "user_api_resource" {
+  identifier = "user_api"
+  name       = "user_api"
+
+  scope {
+    scope_name        = "user_api.all"
+    scope_description = "All access to API"
+  }
+
+  user_pool_id = aws_cognito_user_pool.api_pool.id
+}
+
+resource "aws_cognito_user_pool_client" "authentication_api_client" {
+  name = "authentication-api-client"
+  user_pool_id = aws_cognito_user_pool.api_pool.id
+  generate_secret = true
+
+  allowed_oauth_scopes = ["user_api/user_api.all"]
+  allowed_oauth_flows = ["client_credentials"]
+  allowed_oauth_flows_user_pool_client = true
+}
+
+// Outputs
+
+resource "aws_ssm_parameter" "api_pool_id" {
+  name  = "/nevvi/cognito/${var.api_pool_name}/id"
+  type  = "String"
+  value = aws_cognito_user_pool.api_pool.id
+}
+
+resource "aws_ssm_parameter" "api_pool_auth_client_id" {
+  name  = "/nevvi/cognito/${var.api_pool_name}/clients/authentication/id"
+  type  = "String"
+  value = aws_cognito_user_pool_client.authentication_api_client.id
+}
+
+resource "aws_ssm_parameter" "api_pool_auth_client_secret" {
+  name  = "/nevvi/cognito/${var.api_pool_name}/clients/authentication/secret"
+  type  = "SecureString"
+  value = aws_cognito_user_pool_client.authentication_api_client.client_secret
 }
