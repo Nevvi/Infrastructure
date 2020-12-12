@@ -1,7 +1,7 @@
 data "aws_caller_identity" "current" {}
 
 data "template_file" "bucket_policy" {
-  template = "${file("${path.module}/bucket_policy.json")}"
+  template = file("${path.module}/bucket_policy.json")
   vars = {
     origin_access_identity_arn = aws_cloudfront_origin_access_identity.origin_access_identity.iam_arn
     bucket = "${var.site_name}-source"

@@ -34,13 +34,3 @@ module "user_table" {
   source = "../modules/database"
   table_name = "user-dev"
 }
-
-module "fantasy_player_table" {
-  source = "../modules/database"
-  table_name = "fantasy-players-dev"
-}
-
-module "player_action_queue" {
-  source = "../modules/queue"
-  queue_name = "player-actions-dev"
-}

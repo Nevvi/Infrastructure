@@ -19,6 +19,12 @@ resource "aws_ssm_parameter" "queue_arn" {
   value = aws_sqs_queue.queue.arn
 }
 
+resource "aws_ssm_parameter" "queue_url" {
+  name  = "/nevvi/sqs/${var.queue_name}/url"
+  type  = "String"
+  value = aws_sqs_queue.queue.id
+}
+
 resource "aws_ssm_parameter" "dead_letter_queue_arn" {
   name  = "/nevvi/sqs/${var.queue_name}-dlq/arn"
   type  = "String"
