@@ -26,4 +26,5 @@ jobs:
     - name: Apply
       run: |
         cd development
+        echo "Deploying to dev!"
         terraform apply -auto-approve
