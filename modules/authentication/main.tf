@@ -14,7 +14,7 @@ resource "aws_lambda_permission" "invoke_pre_signup" {
 
 resource "aws_cognito_user_pool" "user_pool" {
   name = var.user_pool_name
-  alias_attributes = ["preferred_username"]
+  username_attributes = ["email", "phone_number"]
 
   password_policy {
     minimum_length = 8
@@ -25,9 +25,9 @@ resource "aws_cognito_user_pool" "user_pool" {
     temporary_password_validity_days = 7
   }
 
-  lambda_config {
-    pre_sign_up = data.aws_lambda_function.pre_signup_trigger.arn
-  }
+//  lambda_config {
+//    pre_sign_up = data.aws_lambda_function.pre_signup_trigger.arn
+//  }
 }
 
 resource "aws_cognito_user_pool_client" "authentication_app_client" {
