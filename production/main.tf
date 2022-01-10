@@ -30,8 +30,3 @@ module "user_pool" {
   api_pool_name = "nevvi-api-users"
   pre_signup_function_name = "authentication-production-preSignUpTrigger"
 }
-
-module "user_table" {
-  source = "../modules/database"
-  table_name = "user"
-}
