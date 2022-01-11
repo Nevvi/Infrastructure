@@ -2,7 +2,7 @@
 
 resource "aws_cognito_user_pool" "user_pool" {
   name = var.user_pool_name
-  username_attributes = ["email", "phone_number"]
+  username_attributes = ["email"]
   auto_verified_attributes = ["email"]
 
   password_policy {
