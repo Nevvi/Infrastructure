@@ -29,3 +29,8 @@ module "user_pool" {
   pre_signup_function_name = "authentication-development-preSignUpTrigger"
   api_pool_name = "nevvi-development-api-users"
 }
+
+module "notification_table" {
+  source = "../modules/database"
+  table_name = "notification-dev"
+}
