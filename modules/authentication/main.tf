@@ -5,6 +5,8 @@ resource "aws_cognito_user_pool" "user_pool" {
   username_attributes = ["email"]
   auto_verified_attributes = ["email"]
 
+  # sms configuration added manually for now
+
   password_policy {
     minimum_length = 8
     require_lowercase = true
@@ -17,6 +19,18 @@ resource "aws_cognito_user_pool" "user_pool" {
 
 resource "aws_cognito_user_pool_client" "authentication_app_client" {
   name = "authentication_api"
+  user_pool_id = aws_cognito_user_pool.user_pool.id
+  generate_secret = false
+  prevent_user_existence_errors = "LEGACY"
+  explicit_auth_flows = [
+    "ALLOW_USER_PASSWORD_AUTH",
+    "ALLOW_ADMIN_USER_PASSWORD_AUTH",
+    "ALLOW_REFRESH_TOKEN_AUTH"
+  ]
+}
+
+resource "aws_cognito_user_pool_client" "notification_app_client" {
+  name = "notification_api"
   user_pool_id = aws_cognito_user_pool.user_pool.id
   generate_secret = false
   prevent_user_existence_errors = "LEGACY"
@@ -70,8 +84,8 @@ resource "aws_cognito_resource_server" "user_api_resource" {
   user_pool_id = aws_cognito_user_pool.api_pool.id
 }
 
-resource "aws_cognito_user_pool_client" "authentication_api_client" {
-  name = "authentication-api-client"
+resource "aws_cognito_user_pool_client" "notification_api_client" {
+  name = "notification-api-client"
   user_pool_id = aws_cognito_user_pool.api_pool.id
   generate_secret = true
 
@@ -95,13 +109,13 @@ resource "aws_ssm_parameter" "api_pool_arn" {
 }
 
 resource "aws_ssm_parameter" "api_pool_auth_client_id" {
-  name  = "/nevvi/cognito/${var.api_pool_name}/clients/authentication/id"
+  name  = "/nevvi/cognito/${var.api_pool_name}/clients/notification/id"
   type  = "String"
-  value = aws_cognito_user_pool_client.authentication_api_client.id
+  value = aws_cognito_user_pool_client.notification_api_client.id
 }
 
 resource "aws_ssm_parameter" "api_pool_auth_client_secret" {
-  name  = "/nevvi/cognito/${var.api_pool_name}/clients/authentication/secret"
+  name  = "/nevvi/cognito/${var.api_pool_name}/clients/notification/secret"
   type  = "SecureString"
-  value = aws_cognito_user_pool_client.authentication_api_client.client_secret
+  value = aws_cognito_user_pool_client.notification_api_client.client_secret
 }
