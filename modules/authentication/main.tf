@@ -29,18 +29,6 @@ resource "aws_cognito_user_pool_client" "authentication_app_client" {
   ]
 }
 
-resource "aws_cognito_user_pool_client" "notification_app_client" {
-  name = "notification_api"
-  user_pool_id = aws_cognito_user_pool.user_pool.id
-  generate_secret = false
-  prevent_user_existence_errors = "LEGACY"
-  explicit_auth_flows = [
-    "ALLOW_USER_PASSWORD_AUTH",
-    "ALLOW_ADMIN_USER_PASSWORD_AUTH",
-    "ALLOW_REFRESH_TOKEN_AUTH"
-  ]
-}
-
 // Outputs
 
 resource "aws_ssm_parameter" "user_pool_id" {
@@ -108,13 +96,13 @@ resource "aws_ssm_parameter" "api_pool_arn" {
   value = aws_cognito_user_pool.api_pool.arn
 }
 
-resource "aws_ssm_parameter" "api_pool_auth_client_id" {
+resource "aws_ssm_parameter" "api_pool_notification_client_id" {
   name  = "/nevvi/cognito/${var.api_pool_name}/clients/notification/id"
   type  = "String"
   value = aws_cognito_user_pool_client.notification_api_client.id
 }
 
-resource "aws_ssm_parameter" "api_pool_auth_client_secret" {
+resource "aws_ssm_parameter" "api_pool_notification_client_secret" {
   name  = "/nevvi/cognito/${var.api_pool_name}/clients/notification/secret"
   type  = "SecureString"
   value = aws_cognito_user_pool_client.notification_api_client.client_secret
