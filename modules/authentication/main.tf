@@ -47,6 +47,7 @@ resource "aws_ssm_parameter" "user_pool_app_client" {
   name  = "/nevvi/cognito/${var.user_pool_name}/clients/authentication/id"
   type  = "String"
   value = aws_cognito_user_pool_client.authentication_app_client.id
+  overwrite = true
 }
 
 // API POOL
@@ -100,10 +101,12 @@ resource "aws_ssm_parameter" "api_pool_notification_client_id" {
   name  = "/nevvi/cognito/${var.api_pool_name}/clients/notification/id"
   type  = "String"
   value = aws_cognito_user_pool_client.notification_api_client.id
+  overwrite = true
 }
 
 resource "aws_ssm_parameter" "api_pool_notification_client_secret" {
   name  = "/nevvi/cognito/${var.api_pool_name}/clients/notification/secret"
   type  = "SecureString"
   value = aws_cognito_user_pool_client.notification_api_client.client_secret
+  overwrite = true
 }
