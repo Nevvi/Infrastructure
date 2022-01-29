@@ -34,3 +34,8 @@ module "notification_table" {
   source = "../modules/database"
   table_name = "notification-dev"
 }
+
+module "response_topic" {
+  source = "../modules/notification"
+  topic_name = "user-responses-dev"
+}
