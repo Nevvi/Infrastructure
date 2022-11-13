@@ -31,12 +31,7 @@ module "user_pool" {
   pre_signup_function_name = "authentication-production-preSignUpTrigger"
 }
 
-module "notification_table" {
+module "user_table" {
   source = "../modules/database"
-  table_name = "notification"
-}
-
-module "response_topic" {
-  source = "../modules/notification"
-  topic_name = "user-responses"
+  table_name = "user"
 }
