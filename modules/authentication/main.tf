@@ -73,8 +73,8 @@ resource "aws_cognito_resource_server" "user_api_resource" {
   user_pool_id = aws_cognito_user_pool.api_pool.id
 }
 
-resource "aws_cognito_user_pool_client" "notification_api_client" {
-  name = "notification-api-client"
+resource "aws_cognito_user_pool_client" "authentication_api_client" {
+  name = "authentication-api-client"
   user_pool_id = aws_cognito_user_pool.api_pool.id
   generate_secret = true
 
@@ -97,16 +97,16 @@ resource "aws_ssm_parameter" "api_pool_arn" {
   value = aws_cognito_user_pool.api_pool.arn
 }
 
-resource "aws_ssm_parameter" "api_pool_notification_client_id" {
-  name  = "/nevvi/cognito/${var.api_pool_name}/clients/notification/id"
+resource "aws_ssm_parameter" "api_pool_authentication_client_id" {
+  name  = "/nevvi/cognito/${var.api_pool_name}/clients/authentication/id"
   type  = "String"
-  value = aws_cognito_user_pool_client.notification_api_client.id
+  value = aws_cognito_user_pool_client.authentication_api_client.id
   overwrite = true
 }
 
-resource "aws_ssm_parameter" "api_pool_notification_client_secret" {
-  name  = "/nevvi/cognito/${var.api_pool_name}/clients/notification/secret"
+resource "aws_ssm_parameter" "api_pool_authentication_client_secret" {
+  name  = "/nevvi/cognito/${var.api_pool_name}/clients/authentication/secret"
   type  = "SecureString"
-  value = aws_cognito_user_pool_client.notification_api_client.client_secret
+  value = aws_cognito_user_pool_client.authentication_api_client.client_secret
   overwrite = true
 }
