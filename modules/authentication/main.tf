@@ -83,6 +83,16 @@ resource "aws_cognito_user_pool_client" "authentication_api_client" {
   allowed_oauth_flows_user_pool_client = true
 }
 
+resource "aws_cognito_user_pool_client" "user_api_client" {
+  name = "user-api-client"
+  user_pool_id = aws_cognito_user_pool.api_pool.id
+  generate_secret = true
+
+  allowed_oauth_scopes = ["user_api/user_api.all"]
+  allowed_oauth_flows = ["client_credentials"]
+  allowed_oauth_flows_user_pool_client = true
+}
+
 // Outputs
 
 resource "aws_ssm_parameter" "api_pool_id" {
@@ -108,5 +118,19 @@ resource "aws_ssm_parameter" "api_pool_authentication_client_secret" {
   name  = "/nevvi/cognito/${var.api_pool_name}/clients/authentication/secret"
   type  = "SecureString"
   value = aws_cognito_user_pool_client.authentication_api_client.client_secret
+  overwrite = true
+}
+
+resource "aws_ssm_parameter" "api_pool_user_client_id" {
+  name  = "/nevvi/cognito/${var.api_pool_name}/clients/user/id"
+  type  = "String"
+  value = aws_cognito_user_pool_client.user_api_client.id
+  overwrite = true
+}
+
+resource "aws_ssm_parameter" "api_pool_user_client_secret" {
+  name  = "/nevvi/cognito/${var.api_pool_name}/clients/user/secret"
+  type  = "SecureString"
+  value = aws_cognito_user_pool_client.user_api_client.client_secret
   overwrite = true
 }
