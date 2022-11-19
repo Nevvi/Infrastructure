@@ -34,3 +34,8 @@ module "user_table" {
   source = "../modules/database"
   table_name = "user-dev"
 }
+
+module "user_images_bucket" {
+  source = "../modules/bucket"
+  bucket_name = "user-images-dev"
+}
