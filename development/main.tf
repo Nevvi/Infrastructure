@@ -37,5 +37,5 @@ module "user_table" {
 
 module "user_images_bucket" {
   source = "../modules/bucket"
-  bucket_name = "user-images-dev"
+  bucket_name = "nevvi-user-images-dev"
 }
