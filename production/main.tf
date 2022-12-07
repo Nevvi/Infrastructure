@@ -31,11 +31,6 @@ module "user_pool" {
   pre_signup_function_name = "authentication-production-preSignUpTrigger"
 }
 
-module "user_table" {
-  source = "../modules/database"
-  table_name = "user"
-}
-
 module "user_images_bucket" {
   source = "../modules/bucket"
   bucket_name = "nevvi-user-images"
