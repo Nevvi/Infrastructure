@@ -35,3 +35,8 @@ module "user_images_bucket" {
   source = "../modules/bucket"
   bucket_name = "nevvi-user-images"
 }
+
+module "notification_queue" {
+  source = "../modules/queue"
+  queue_name = "notifications"
+}
