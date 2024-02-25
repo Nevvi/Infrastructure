@@ -30,6 +30,23 @@ module "user_pool" {
   api_pool_name = "nevvi-development-api-users"
 }
 
+resource "aws_cognito_user_pool" "user_pool_test" {
+  name = "nevvi-development-public-users-test"
+  username_attributes = ["phone_number"]
+  auto_verified_attributes = ["phone_number"]
+
+  # sms configuration added manually for now
+
+  password_policy {
+    minimum_length = 8
+    require_lowercase = true
+    require_uppercase = true
+    require_numbers = true
+    require_symbols = true
+    temporary_password_validity_days = 7
+  }
+}
+
 module "user_images_bucket" {
   source = "../modules/bucket"
   bucket_name = "nevvi-user-images-dev"
