@@ -30,8 +30,8 @@ module "user_pool" {
   api_pool_name = "nevvi-development-api-users"
 }
 
-resource "aws_cognito_user_pool" "user_pool_test" {
-  name = "nevvi-development-public-users-test"
+resource "aws_cognito_user_pool" "user_pool_phone" {
+  name = "nevvi-development-public-users-v2"
   username_attributes = ["phone_number"]
   auto_verified_attributes = ["phone_number"]
 
