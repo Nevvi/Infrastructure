@@ -30,6 +30,18 @@ module "user_pool" {
   api_pool_name = "nevvi-development-api-users"
 }
 
+module "user_images_bucket" {
+  source = "../modules/bucket"
+  bucket_name = "nevvi-user-images-dev"
+}
+
+module "notification_queue" {
+  source = "../modules/queue"
+  queue_name = "notifications-dev"
+}
+
+// TESTING
+
 resource "aws_cognito_user_pool" "user_pool_phone" {
   name = "nevvi-development-public-users-v2"
   username_attributes = ["phone_number"]
@@ -51,31 +63,33 @@ resource "aws_cognito_user_pool" "user_pool_phone" {
   }
 }
 
+resource "aws_cognito_user_pool_client" "authentication_app_client_phone" {
+  name = "authentication_api"
+  user_pool_id = aws_cognito_user_pool.user_pool_phone.id
+  generate_secret = false
+  prevent_user_existence_errors = "LEGACY"
+  explicit_auth_flows = [
+    "ALLOW_USER_PASSWORD_AUTH",
+    "ALLOW_ADMIN_USER_PASSWORD_AUTH",
+    "ALLOW_REFRESH_TOKEN_AUTH"
+  ]
+}
+
 resource "aws_ssm_parameter" "user_pool_id" {
   name  = "/nevvi/cognito/nevvi-development-public-users-v2/id"
   type  = "String"
-  value = aws_cognito_user_pool.user_pool.id
+  value = aws_cognito_user_pool.user_pool_phone.id
 }
 
 resource "aws_ssm_parameter" "user_pool_arn" {
   name  = "/nevvi/cognito/nevvi-development-public-users-v2/arn"
   type  = "String"
-  value = aws_cognito_user_pool.user_pool.arn
+  value = aws_cognito_user_pool.user_pool_phone.arn
 }
 
 resource "aws_ssm_parameter" "user_pool_app_client" {
   name  = "/nevvi/cognito/nevvi-development-public-users-v2/clients/authentication/id"
   type  = "String"
-  value = aws_cognito_user_pool_client.authentication_app_client.id
+  value = aws_cognito_user_pool_client.authentication_app_client_phone.id
   overwrite = true
-}
-
-module "user_images_bucket" {
-  source = "../modules/bucket"
-  bucket_name = "nevvi-user-images-dev"
-}
-
-module "notification_queue" {
-  source = "../modules/queue"
-  queue_name = "notifications-dev"
 }
