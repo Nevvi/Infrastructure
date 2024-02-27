@@ -2,10 +2,14 @@
 
 resource "aws_cognito_user_pool" "user_pool" {
   name = var.user_pool_name
-  username_attributes = ["email"]
-  auto_verified_attributes = ["email"]
+  username_attributes = ["phone_number"]
+  auto_verified_attributes = ["phone_number"]
 
-  # sms configuration added manually for now
+  sms_configuration {
+    external_id    = "f577c505-dfa3-437a-afcc-ecf532b24f70"
+    sns_caller_arn = "arn:aws:iam::275527036335:role/service-role/nevvi-sms-role"
+    sns_region     = "us-east-1"
+  }
 
   password_policy {
     minimum_length = 8
