@@ -11,6 +11,18 @@ resource "aws_cognito_user_pool" "user_pool" {
     sns_region     = "us-east-1"
   }
 
+  account_recovery_setting {
+      recovery_mechanism {
+        name     = "verified_phone_number"
+        priority = 1
+      }
+
+      recovery_mechanism {
+        name     = "verified_email"
+        priority = 2
+      }
+    }
+
   password_policy {
     minimum_length = 8
     require_lowercase = true
