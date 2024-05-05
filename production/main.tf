@@ -40,3 +40,8 @@ module "notification_queue" {
   source = "../modules/queue"
   queue_name = "notifications"
 }
+
+module "refresh_suggestions_queue" {
+  source = "../modules/queue"
+  queue_name = "refresh-suggestions"
+}

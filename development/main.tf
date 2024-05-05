@@ -39,3 +39,8 @@ module "notification_queue" {
   source = "../modules/queue"
   queue_name = "notifications-dev"
 }
+
+module "refresh_suggestions_queue" {
+  source = "../modules/queue"
+  queue_name = "refresh-suggestions-dev"
+}
