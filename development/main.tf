@@ -48,9 +48,9 @@ module "refresh_suggestions_queue" {
 resource "random_uuid" "api_basic_auth" {
 }
 
-resource "aws_ssm_parameter" "api_basic_auth_param" {
-  name        = "/nevvi/lambda/development/api-basic-auth"
-  description = "Basic auth string for M2M communication"
+resource "aws_ssm_parameter" "lambda-api-key" {
+  name        = "/nevvi/lambda/development/m2m-api-key"
+  description = "Api key string for M2M communication"
   type        = "SecureString"
   value       = random_uuid.api_basic_auth.result
 }
