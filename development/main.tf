@@ -44,3 +44,13 @@ module "refresh_suggestions_queue" {
   source = "../modules/queue"
   queue_name = "refresh-suggestions-dev"
 }
+
+resource "random_uuid" "api_basic_auth" {
+}
+
+resource "aws_ssm_parameter" "api_basic_auth_param" {
+  name        = "/nevvi/lambda/development/api-basic-auth"
+  description = "Basic auth string for M2M communication"
+  type        = "SecureString"
+  value       = random_uuid.api_basic_auth.result
+}
