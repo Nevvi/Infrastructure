@@ -45,12 +45,22 @@ module "refresh_suggestions_queue" {
   queue_name = "refresh-suggestions-dev"
 }
 
-resource "random_uuid" "api_basic_auth" {
+resource "random_uuid" "authentication_api_key" {
 }
 
-resource "aws_ssm_parameter" "lambda-api-key" {
-  name        = "/nevvi/lambda/development/m2m-api-key"
-  description = "Api key string for M2M communication"
+resource "aws_ssm_parameter" "authentication_api_key_param" {
+  name        = "/nevvi/lambda/development/authentication-api-key"
+  description = "Api key string for M2M communication to authentication service"
   type        = "SecureString"
-  value       = random_uuid.api_basic_auth.result
+  value       = random_uuid.authentication_api_key.result
+}
+
+resource "random_uuid" "user_api_key" {
+}
+
+resource "aws_ssm_parameter" "user_api_key_param" {
+  name        = "/nevvi/lambda/development/user-api-key"
+  description = "Api key string for M2M communication to user service"
+  type        = "SecureString"
+  value       = random_uuid.user_api_key.result
 }
